@@ -1,2 +1,50 @@
-<h1>Products#show</h1>
-<p>Find me in app/views/products/show.html.erb</p>
+<div class="container-fluid m-0">
+<div class="text-center">
+<h1>
+Welcome To Product Page</h1>
+
+<p><%= @product.id %></p>
+</div>
+</div>
+
+<%# View Products %>
+
+<div class="text-center">
+<%@product.comments.each do |comment|%>
+
+
+<h2>
+Name</h2>
+<p><%=comment.commenter%> </p>
+
+<h2>
+type</h2>
+<p><%=comment.body%></p>
+
+<%end%>
+</div>
+
+<%# Add Product %>
+
+
+<%if user_signed_in?%>
+  <div class="text-center">
+<h2>Add a Comment:</h2>
+<%= form_with model: [ @product, @product.comments.build ] do |form| %>
+  <p>
+    <%= form.label :body %><br>
+    <%=form.text_field :body %>
+  </p>
+  <p>
+    <%= form.submit %>
+  </p>
+<% end %>
+
+</div>
+<%else%>
+  <h3>
+    login to comment on products
+  </h3>
+<%end%>
+
+

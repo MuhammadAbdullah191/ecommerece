@@ -6,4 +6,6 @@ class User < ApplicationRecord
          :recoverable, :rememberable, :validatable
 
   has_many :products
+  has_many :comments
+  has_many :reviewed_comments, through: :comments, source: :product
 end
