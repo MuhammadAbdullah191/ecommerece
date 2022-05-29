@@ -25,6 +25,32 @@ class CommentsController < ApplicationController
     redirect_to product_path(@product)
   end
 
+  def edit
+    puts("params");
+    puts(params);
+    puts(params[:comment]);
+    puts("params");
+    @comment=Comment.find(params[:product_id])
+  end
+
+  def update
+    @comment=Comment.find(params[:id])
+
+    if @comment.update(comment_params)
+      redirect_to @comment
+    else
+      render :edit
+    end
+  end
+
+  def destroy
+    @comment=Comment.find(params[:id])
+    @comment.destroy
+
+    redirect_to root_path, status: :see_other
+  end
+
+
   private
   def comment_params
     params.require(:comment).permit(:body)
