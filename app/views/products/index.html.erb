@@ -25,7 +25,20 @@
   <%else%>
     <%= link_to  'Sign In' , user_session_path%>
 <%end%>
-<button class="btn"><i class="fa fa-bars"></i> Cart</button>
+<%if total_cart_items%>
+  <%=   link_to cart_path(@cart), class:" s button is-warning" do%>
+  <span class="icon is-small">
+    <i class="fa fa-shopping-cart">
+
+    </i>
+  </span>
+  <span>
+    Cart
+    <%= cart_count_over_one%>
+  </span>
+<%end%>
+<%end%>
+
 <form class="form-inline d-flex flex-row">
     <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
     <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>

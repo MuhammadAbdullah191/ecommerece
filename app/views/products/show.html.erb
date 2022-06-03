@@ -30,6 +30,8 @@
 
 
 <p><%= @product.id %></p>
+
+<%= button_to 'Add To Cart' , line_items_path(product_id: @product), class: 'button is-warning add-to-cart'%>
 </div>
 </div>
 
