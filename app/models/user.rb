@@ -8,4 +8,14 @@ class User < ApplicationRecord
   has_many :products
   has_many :comments
   has_many :reviewed_comments, through: :comments, source: :product
+
+
+  def to_s
+    email
+  end
+
+  after_create do
+    customer = Stripe::Customer.create(email:email)
+    update(stripe_customer_id: customer.id)
+  end
 end
