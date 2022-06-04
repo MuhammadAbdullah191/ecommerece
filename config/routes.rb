@@ -12,9 +12,9 @@ Rails.application.routes.draw do
   # resources :users, only: %i[show]
   root 'products#index'
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
-  resources :webhooks, only: [:create]
+  resources :webhook, only: [:create]
   resources :checkout, only: [:create]
-
+  get "success", to: "checkout#success"
   resources :users do
     resources :products
   end
