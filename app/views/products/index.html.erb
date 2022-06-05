@@ -12,19 +12,19 @@
       <li class="nav-item">
         <a class="nav-link" href="#">Features</a>
       </li>
+
       <li class="nav-item">
         <a class="nav-link" href="#">Pricing</a>
       </li>
+
+      <% if user_signed_in? %>
       <li class="nav-item">
-        <a class="nav-link disabled" href="#">Disabled</a>
+        <%= link_to "Profile", "/users/"+current_user.id.to_s, :class=>"nav-link" %>
       </li>
+      <%end%>
     </ul>
-    <div>
-    <% if user_signed_in? %>
-  <%= link_to  'Sign Out' , destroy_user_session_path, :method => :delete%>
-  <%else%>
-    <%= link_to  'Sign In' , user_session_path%>
-<%end%>
+    <div class="d-flex flex-row">
+
 <%if total_cart_items%>
   <%=   link_to cart_path(@cart), class:" s button is-warning" do%>
   <span class="icon is-small">
@@ -38,11 +38,28 @@
   </span>
 <%end%>
 <%end%>
+<div class="m-2">
+  <%= search_form_for @q do |f| %>
 
-<form class="form-inline d-flex flex-row">
-    <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
-    <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
-  </form>
+  <%= f.label :name_cont %>
+  <%= f.search_field :name_cont %>
+
+
+
+  <%= f.submit %>
+</div>
+
+<% end %>
+<% if user_signed_in? %>
+    <div>
+    <%= link_to  'Sign Out' , destroy_user_session_path, :method => :delete%>
+
+    <%=image_tag(current_user.avatar ,alt: "avatar", class: "rounded-circle", id: "avatar",:alt => "rss feed", :height =>"60", :width => "60") %>
+    </div>
+
+  <%else%>
+    <%= link_to  'Sign In' , user_session_path%>
+<%end%>
     </div>
 
   </div>
@@ -51,15 +68,48 @@
 
 <div class="container mt-2">
   <%@products.each do |product|%>
+   <div class="border d-flex flex-row p-3 m-1">
+   <% if product.images.attached?%>
+      <div>
+        <%=image_tag(product.images.first ,alt: "avatar", class: "rounded", id: "avatar",:alt => "rss feed", :height =>"200", :width => "200") %>
+      </div>
+     <%else%>
+    <img src="..." alt=""  width="200" height="200">
+    <%end%>
+
+    <div class="flex-column p-3 m-2">
+      <h4>
+        <%=product.name%>
+      </h4>
+      <p class="mt-1">
+        <%=product.product_type%>
+      </p>
+      <p class="mt-1 text-red">
+        <%=product.quantity%>
+      </p>
+      <p class="mt-1 text-danger">
+        $ <%=product.quantity%>
+      </p>
+      <%= link_to "View",product, :class=>"btn btn-dark" %>
+    </div>
+
+    </div>
+
+
+
+
+  <% if false%>
+
     <div class="card d-flex flex-row mt-2" style="width: 18rem">
     <% if product.images.attached?%>
     <div>
     <%= image_tag(product.images.first, alt: "avatar", class: "card-img-top", id: "avatar") %>
     </div>
-
     <%else%>
     <img src="..." alt="" class="card-img-top">
     <%end%>
+
+
 
       <div class="card-body">
         <h5 class="card-title"><%=product.name%></h5>
@@ -71,5 +121,6 @@
 
       </div>
     </div>
+    <%end%>
   <%end%>
 </div>

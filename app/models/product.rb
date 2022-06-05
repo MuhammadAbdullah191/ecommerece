@@ -6,7 +6,7 @@ class Product < ApplicationRecord
   has_many_attached :images
   has_many :line_items
 
-  def not_refereced_by_any_line_item
+  def not_referenced_by_any_line_item
     unless line_items.empty?
       errors.add(:base, "Line items present")
       throw :abort

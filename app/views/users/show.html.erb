@@ -1,67 +1,49 @@
+<%headers = %w[blerg blarg]%>
+<%rows = [%w[hi ho], %w[hi hum]]%>
 <div class="container-fluid m-0">
 <div class="text-center">
 <h1>
 Welcome To Profile Page</h1>
 <p><%= @user.email %></p>
-<%= Product.last.images.first%>
-<%= image_tag(Product.last.images.last, alt: "avatar", class: "avatar", id: "avatar") %>
+<%=image_tag(current_user.avatar ,alt: "avatar", class: "rounded-circle", id: "avatar",:alt => "rss feed", :height =>"60", :width => "60") %>
 </div>
 </div>
 
 <%# View Products %>
+<div class="m-5">
+</div>
+<table class="table">
+  <thead>
+    <tr>
+      <th scope="col">#</th>
+      <th scope="col">Name</th>
+      <th scope="col">Description</th>
+      <th scope="col">Price</th>
+      <th scope="col">Edit/Delete</th>
+    </tr>
+  </thead>
+  <tbody>
+  <%@user.products.each do |product|%>
+    <tr>
+      <th scope="row">1</th>
+      <td><%=product.name%> </td>
+      <td><%=product.product_type%> </td>
+      <td><%=product.price%> </td>
+      <td>
+        <li><%= link_to "Edit", edit_product_path(product) %></li>
+    <li><%= link_to "Destroy", product_path(product) , method: :delete, data: {confirm: "Are You Sure"}%></li>
+      </td>
+    </tr>
+  <%end%>
+  </tbody>
+</table>
 
 <div class="text-center">
-<%@user.products.each do |product|%>
-
-
-<h2>
-Name</h2>
-<p><%=product.name%> </p>
-
-<h2>
-type</h2>
-<p><%=product.product_type%></p>
-
-<% if user_signed_in?%>
-  <%if current_user.id == product.user_id%>
-    <li><%= link_to "Edit", edit_product_path(product) %></li>
-    <li><%= link_to "Destroy", product_path(product) , method: :delete, data: {confirm: "Are You Sure"}%></li>
-  <%end%>
-<%end%>
-<%end%>
+  <%= link_to 'Add A Product', new_user_product_path(current_user.id), :class => "btn btn-light" %>
 </div>
+
 
 <%# Add Product %>
-
-
-<div class="text-center">
-<h2>Add a Product:</h2>
-<%= form_with model: [ @user, @user.products.build ] do |form| %>
-  <p>
-    <%= form.label :name %><br>
-    <%= form.text_field :name %>
-  </p>
-  <p>
-    <%= form.label :product_type %><br>
-    <%= form.text_field :product_type %>
-  </p>
-  <p>
-
-<div class="field">
-    <div class="gravatar_edit">
-      <%= form.file_field :images,
-        placeholder: 'Upload picture',
-        :multiple => true,
-        direct_upload: true
-        %>
-    </div>
-  </div>
-
-    <%= form.submit %>
-  </p>
-<% end %>
-
-</div>
 
 
 

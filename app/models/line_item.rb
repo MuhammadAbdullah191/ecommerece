@@ -9,7 +9,7 @@ class LineItem < ApplicationRecord
   def to_builder
     Jbuilder.new do |line_item|
       line_item.price 999
-      line_item.quantity 1
+      line_item.quantity quantity
     end
   end
 end

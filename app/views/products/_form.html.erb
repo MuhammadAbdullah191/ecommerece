@@ -1,5 +1,5 @@
 <div class="text-center">
-<%= @product.name%>
+<%# <%= @product.name%>
 <%= form_with model: product do |form| %>
   <p>
     <%= form.label :name %><br>
@@ -26,3 +26,66 @@
 <% end %>
 
 </div>
+
+
+<div class="m-5">
+  <%= form_with model: product do |form| %>
+  <form>
+  <div class="form-row">
+    <div class="form-group col-md-12">
+      <label for="inputEmail4">Name</label>
+      <div>
+      <%= form.text_field :name, :class => 'form-control' %>
+      </div>
+    </div>
+
+
+  </div>
+
+
+  <div class="form-group">
+    <label for="inputAddress">Description</label>
+   <%= form.text_field :product_type, :class => 'form-control' %>
+  </div>
+
+
+
+  <div class="form-row">
+
+
+    <div class="form-group">
+    <label for="inputAddress2">Quantity</label>
+    <%# number_field_tag %>
+    <%= form.number_field :quantity, :class => 'form-control' %>
+  </div>
+
+    <div class="form-group">
+    <label for="inputAddress2">Price</label>
+    <%# number_field_tag %>
+    <%= form.number_field :price, :class => 'form-control' %>
+  </div>
+  </div>
+
+   <div class="field">
+    <div class="gravatar_edit">
+      <%= form.file_field :images,
+        placeholder: 'Upload picture',
+        :multiple => true,
+        direct_upload: true
+        %>
+    </div>
+  </div>
+
+<%= form.submit "Create A Product" %>
+</form>
+
+
+<% end %>
+
+</div>
+
+
+
+
+
+

@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  get 'promos/index'
   resources :line_items
   resources :carts
   get 'comments/index'

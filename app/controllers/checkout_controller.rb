@@ -7,7 +7,7 @@ class CheckoutController < ApplicationController
     # return 0
     @data=@cart.line_items.collect {|item| item.to_builder.attributes!}
     print(@data)
-    product=Product.find(params[:id])
+    # product=Product.find(params[:id])
     @session = Stripe::Checkout::Session.create({
       customer: current_user.stripe_customer_id,
       payment_method_types: ['card'],

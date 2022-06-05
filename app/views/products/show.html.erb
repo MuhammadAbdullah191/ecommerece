@@ -6,15 +6,30 @@
 <div class="container" style ="width:80vh">
   <div id="carouselExampleControls" class="carousel slide" data-ride="carousel">
   <div class="carousel-inner">
-    <div class="carousel-item active">
-    <%= image_tag(@product.images.first, alt: "avatar", class: "d-block w-100", id: "avatar") %>
-    </div>
-    <div class="carousel-item">
+
+    <%# loop over images %>
+    <% if @product.images.present?%>
+      <div class="carousel-item active">
+        <%= image_tag(@product.images.first, alt: "avatar", class: "d-block w-100", id: "avatar",:height =>"400", :width => "400") %>
+      </div>
+
+      <%@product.images.each do |image|%>
+      <div class="carousel-item">
+        <%= image_tag(image, alt: "avatar", class: "d-block w-100", id: "avatar",:height =>"400", :width => "400") %>
+      </div>
+      <%end%>
+    <%else%>
+    <h1>No images</h1>
+     <img src="/assets/Unknown.jpeg" alt=""  width="400" height="400">
+    <%end%>
+
+
+    <%# <div class="carousel-item">
       <img class="d-block w-100" src="..." alt="Second slide">
     </div>
     <div class="carousel-item">
       <img class="d-block w-100" src="..." alt="Third slide">
-    </div>
+    </div> %>
   </div>
   <a class="carousel-control-prev" href="#carouselExampleControls" role="button" data-slide="prev">
     <span class="carousel-control-prev-icon" aria-hidden="true"></span>
@@ -35,28 +50,37 @@
 </div>
 </div>
 
-<%# View Products %>
-
-<div class="text-center">
-<%@product.comments.each do |comment|%>
-
-<h2>
-Name</h2>
-<p><%=comment.commenter%> </p>
-
-<h2>
-type</h2>
-<p><%=comment.body%></p>
-
-<%if user_signed_in?%>
-  <%if comment.user_id==current_user.id%>
-    <li><%= link_to "Edit", edit_product_comment_path(comment) %></li>
-    <li><%= link_to "Destroy", comment_path(comment) , method: :delete, data: {confirm: "Are You Sure"} %></li>
-  <%end%>
-<%end%>
-
-<%end%>
+<%# View Comments %>
+<div class="m-5">
 </div>
+<table class="table">
+  <thead>
+    <tr>
+      <th scope="col">#</th>
+      <th scope="col">Name</th>
+      <th scope="col">Comment</th>
+      <th scope="col">Edit/Delete</th>
+    </tr>
+  </thead>
+  <tbody>
+  <%@product.comments.each do |comment|%>
+    <tr>
+      <th scope="row">1</th>
+      <td><%=comment.commenter%> </td>
+      <td><%=comment.body%> </td>
+      <td>
+        <li><%= link_to "Edit", edit_product_comment_path(comment) %></li>
+    <li><%= link_to "Destroy", comment_path(comment) , method: :delete, data: {confirm: "Are You Sure"}%></li>
+      </td>
+    </tr>
+  <%end%>
+  <tr>
+    <th scope="row">1</th>
+      <td><%=2%> </td>
+      <td><%=3%> </td>
+  </tr>
+  </tbody>
+</table>
 
 <%# Add Product %>
 
@@ -67,7 +91,7 @@ type</h2>
     You cannot comment on your own product
   <%else%>
     <h2>Add a Comment:</h2>
-<%= form_with model: [ @product, @product.comments.build ] do |form| %>
+<%= form_with model: [ @product, @product.comments.build ], remote: true do |form| %>
   <p>
     <%= form.label :body %><br>
     <%=form.text_field :body %>
