@@ -1,0 +1,75 @@
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<nav class="navbar navbar-expand-lg navbar-light bg-light justify-content-between">
+  <a class="navbar-brand" href="#">ShopOnline</a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <div class="collapse navbar-collapse justify-content-between" id="navbarNav">
+    <ul class="navbar-nav">
+      <li class="nav-item active">
+        <a class="nav-link" href="#">Home <span class="sr-only"></span></a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="#">Features</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="#">Pricing</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link disabled" href="#">Disabled</a>
+      </li>
+    </ul>
+    <div>
+    <% if user_signed_in? %>
+  <%= link_to  'Sign Out' , destroy_user_session_path, :method => :delete%>
+  <%else%>
+    <%= link_to  'Sign In' , user_session_path%>
+<%end%>
+<%if total_cart_items%>
+  <%=   link_to cart_path(@cart), class:" s button is-warning" do%>
+  <span class="icon is-small">
+    <i class="fa fa-shopping-cart">
+
+    </i>
+  </span>
+  <span>
+    Cart
+    <%= cart_count_over_one%>
+  </span>
+<%end%>
+<%end%>
+
+<form class="form-inline d-flex flex-row">
+    <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+    <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+  </form>
+    </div>
+
+  </div>
+
+</nav>
+
+<div class="container mt-2">
+  <%@products.each do |product|%>
+    <div class="card d-flex flex-row mt-2" style="width: 18rem">
+    <% if product.images.attached?%>
+    <div>
+    <%= image_tag(product.images.first, alt: "avatar", class: "card-img-top", id: "avatar") %>
+    </div>
+
+    <%else%>
+    <img src="..." alt="" class="card-img-top">
+    <%end%>
+
+      <div class="card-body">
+        <h5 class="card-title"><%=product.name%></h5>
+        <p class="card-text">
+          This is product
+        </p>
+        <%= %>
+          <%= link_to "<button >View </button>".html_safe, product%>
+
+      </div>
+    </div>
+  <%end%>
+</div>

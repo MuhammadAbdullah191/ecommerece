@@ -1,6 +1,6 @@
 Rails.application.configure do
   # Settings specified here will take precedence over those in config/application.rb.
-
+  config.action_mailer.default_url_options = { host: 'https://boiling-lowlands-20810.herokuapp.com' }
   # Code is not reloaded between requests.
   config.cache_classes = true
 
@@ -91,4 +91,6 @@ Rails.application.configure do
 
   # Do not dump schema after migrations.
   config.active_record.dump_schema_after_migration = false
+  # Store uploaded files on the local file system in a temporary directory.
+  config.active_storage.service = :cloudinary
 end

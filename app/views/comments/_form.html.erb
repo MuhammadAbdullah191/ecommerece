@@ -1,0 +1,15 @@
+<div class="text-center">
+<%= @comment.commenter%>
+<%= form_with model: comment do |form| %>
+  <p>
+    <%= form.label :body %><br>
+    <%= form.text_field :body %>
+  </p>
+
+
+
+    <%= form.submit %>
+  </p>
+<% end %>
+
+</div>
