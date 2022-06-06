@@ -22,7 +22,15 @@ class ProductsController < ApplicationController
     p "current_user.id"
     @user=User.find(current_user.id)
     @product=@user.products.create(product_params)
-    redirect_to user_path(@user)
+
+    if @product.save
+      redirect_to user_path(@user)
+    else
+      format.html { render :new, status: :unprocessable_entity }
+        format.json { render json: @product.errors, status: :unprocessable_entity }
+    end
+    # @product=@user.products.create(product_params)
+
   end
 
   def edit

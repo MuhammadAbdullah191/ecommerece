@@ -7,9 +7,13 @@ class LineItem < ApplicationRecord
   end
 
   def to_builder
+    p "in builder"
+    @product= Product.find(self.product_id)
     Jbuilder.new do |line_item|
-      line_item.price 999
+      line_item.name @product.name
+      line_item.amount @product.price
       line_item.quantity quantity
+      line_item.currency "usd"
     end
   end
 end

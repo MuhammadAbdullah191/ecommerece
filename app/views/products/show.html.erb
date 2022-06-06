@@ -1,3 +1,4 @@
+<%= link_to 'Back', products_path %>
 <div class="container-fluid m-0">
 <div class="text-center">
 <h1>
@@ -46,7 +47,7 @@
 
 <p><%= @product.id %></p>
 
-<%= button_to 'Add To Cart' , line_items_path(product_id: @product), class: 'button is-warning add-to-cart'%>
+<%= button_to 'Add To Cart' , line_items_path(product_id: @product, actions: "+"), class: 'button is-warning add-to-cart'%>
 </div>
 </div>
 

@@ -1,35 +1,13 @@
-<div class="text-center">
-<%# <%= @product.name%>
-<%= form_with model: product do |form| %>
-  <p>
-    <%= form.label :name %><br>
-    <%= form.text_field :name %>
-  </p>
-  <p>
-    <%= form.label :product_type %><br>
-    <%= form.text_field :product_type %>
-  </p>
-  <p>
 
-<div class="field">
-    <div class="gravatar_edit">
-      <%= form.file_field :images,
-        placeholder: 'Upload picture',
-        :multiple => true,
-        direct_upload: true
-        %>
-    </div>
-  </div>
-
-    <%= form.submit %>
-  </p>
-<% end %>
 
 </div>
 
 
 <div class="m-5">
   <%= form_with model: product do |form| %>
+  <% @product.errors.full_messages.each do |message| %>
+      <li><%= message %></li>
+  <% end %>
   <form>
   <div class="form-row">
     <div class="form-group col-md-12">

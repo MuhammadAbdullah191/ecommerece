@@ -1,6 +1,25 @@
 <div class="columns align-items-center">
   <div class="column is-1">
-    <%= line_item.quantity %>
+  <div class="d-flex flex-row">
+  <%= button_to '+' , line_items_path(product_id: line_item.product, actions: "+"), class: 'button is-warning add-to-cart'%>
+  <div class="mx-3">
+  <%= line_item.quantity %>
+  </div>
+
+  <%= button_to '- ' , line_items_path(product_id: line_item.product, actions: "-"), class: 'button is-warning add-to-cart'%>
+    <%# <%= button_to "+" @cart.addProduct(line_item.product)%>
+  <div class="mx-5">
+    <h3>
+    Maximum Allowed</h3>
+    <p>
+    <%=line_item.product.quantity%>
+    </p>
+  </div>
+  </div>
+    <div class="has-text-right">
+  <%= link_to 'Remove Item', line_item, method: :delete, data: { confirm: "Are you sure? " }, class: "button is-small mb4" %>
+
+</div>
   </div>
 <div class="column is-2">
     <figure class="is-128x128 image">
@@ -17,7 +36,4 @@
   </div>
 </div>
 
-<div class="has-text-right">
-  <%= link_to 'Remove Item', line_item, method: :delete, data: { confirm: "Are you sure? " }, class: "button is-small mb4" %>
 
-</div>

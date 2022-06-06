@@ -24,6 +24,11 @@
     </div>
 
   </div>
-  <%= button_to "Buy Now", checkout_index_path, remote: true %>
+  <%if user_signed_in?%>
+    <%= button_to "Buy Now", checkout_index_path, remote: true %>
+  <%else%>
+  <%= link_to  'Sign In to Buy' , user_session_path%>
+  <%end%>
+
 </section>
 
