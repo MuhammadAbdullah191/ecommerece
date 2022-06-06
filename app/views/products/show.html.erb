@@ -47,7 +47,7 @@
 
 <p><%= @product.id %></p>
 
-<%= button_to 'Add To Cart' , line_items_path(product_id: @product, actions: "+"), class: 'button is-warning add-to-cart'%>
+
 </div>
 </div>
 
@@ -89,8 +89,9 @@
 <%if user_signed_in?%>
   <div class="text-center">
   <%if current_user.id==@product.user_id%>
-    You cannot comment on your own product
+    You cannot comment or add his product
   <%else%>
+  <%= button_to 'Add To Cart' , line_items_path(product_id: @product, actions: "+"), class: 'button is-warning add-to-cart'%>
     <h2>Add a Comment:</h2>
 <%= form_with model: [ @product, @product.comments.build ], remote: true do |form| %>
   <p>
