@@ -8,6 +8,11 @@ class LineItem < ApplicationRecord
 
   def to_builder
     p "in builder"
+
+    # @user=User.find(current_user.id)
+    # if user.promos.present?
+      # p "promo code is present"
+    # end
     @product= Product.find(self.product_id)
     Jbuilder.new do |line_item|
       line_item.name @product.name
