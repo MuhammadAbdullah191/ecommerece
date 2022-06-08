@@ -1,24 +1,16 @@
-# README
+Shop Online
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+Ecommerece app where user can list his products to sell online
 
-Things you may want to cover:
+Other then that user can order products as well. User cannot order his own product.
 
-* Ruby version
+User can add comment or other people products
 
-* System dependencies
+Cart is implemented which is a session based which will be destroyed as soon as session chenges or get destroyed
 
-* Configuration
+Devise is usad for user authentication
 
-* Database creation
+Stripe is used as a payment gateway
 
-* Database initialization
 
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
+Deployment on heroku
