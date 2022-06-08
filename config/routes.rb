@@ -1,15 +1,8 @@
 Rails.application.routes.draw do
   resources :order_items
   resources :orders
-  get 'promos/index'
   resources :line_items
   resources :carts
-  get 'comments/index'
-  get 'comments/show'
-  get 'products/index'
-  get 'products/show'
-  get 'users/index'
-  get 'users/show'
   devise_for :users
   # devise_for :users
   # resources :users, only: %i[show]
