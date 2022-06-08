@@ -5,7 +5,12 @@
 <h1>
 Welcome To Profile Page</h1>
 <p><%= @user.email %></p>
-<%=image_tag(current_user.avatar ,alt: "avatar", class: "rounded-circle", id: "avatar",:alt => "rss feed", :height =>"60", :width => "60") %>
+<%if @user.avatar.attached?%>
+  <p>no image attached</p>
+  <%else%>
+  <%=image_tag(current_user.avatar ,alt: "avatar", class: "rounded-circle", id: "avatar",:alt => "rss feed", :height =>"60", :width => "60") if @user.avatar.attached?%>
+<%end%>
+
 </div>
 </div>
 
