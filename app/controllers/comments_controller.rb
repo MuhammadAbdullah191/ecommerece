@@ -22,32 +22,36 @@ class CommentsController < ApplicationController
       puts "user not signed in"
     end
 
-    redirect_to product_path(@product)
+    # redirect_to product_path(@product)
   end
 
   def edit
+    session[:return_to] ||= request.referer
     puts("params");
     puts(params);
     puts(params[:comment]);
     puts("params");
-    @comment=Comment.find(params[:product_id])
+    @comment=Comment.find(params[:id])
+
   end
 
   def update
     @comment=Comment.find(params[:id])
 
     if @comment.update(comment_params)
-      redirect_to @comment
+      redirect_to session.delete(:return_to)
+      # redirect_to product_path(@product)
     else
       render :edit
     end
   end
 
   def destroy
+    session[:return_to] ||= request.referer
     @comment=Comment.find(params[:id])
     @comment.destroy
-
-    redirect_to root_path, status: :see_other
+    redirect_to session.delete(:return_to)
+    # redirect_to root_path, status: :see_other
   end
 
 

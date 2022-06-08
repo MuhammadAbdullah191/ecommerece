@@ -4,7 +4,7 @@ class ProductsController < ApplicationController
     @products = @q.result(distinct: true)
     if user_signed_in?
       p "current_user"
-      p current_user.promos
+      p current_user.promo
     end
     # @products=Product.all();
   end
@@ -26,8 +26,9 @@ class ProductsController < ApplicationController
     if @product.save
       redirect_to user_path(@user)
     else
-      format.html { render :new, status: :unprocessable_entity }
-        format.json { render json: @product.errors, status: :unprocessable_entity }
+      p "here"
+      p @product.errors.messages
+      render :new
     end
     # @product=@user.products.create(product_params)
 
@@ -51,11 +52,11 @@ class ProductsController < ApplicationController
   end
 
   def destroy
-
+    session[:return_to] ||= request.referer
     @product=Product.find(params[:id])
     @product.destroy
-
-    redirect_to root_path, status: :see_other
+    redirect_to session.delete(:return_to)
+    # redirect_to root_path, status: :see_other
   end
 
   private

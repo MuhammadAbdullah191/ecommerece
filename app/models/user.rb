@@ -24,7 +24,8 @@ class User < ApplicationRecord
   has_many :products
   has_many :comments
   has_many :reviewed_comments, through: :comments, source: :product
-  has_many :promos
+  has_many :orders
+  has_one :promo
 
   def to_s
     email

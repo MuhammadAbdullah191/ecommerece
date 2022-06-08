@@ -56,7 +56,7 @@
     <%p " if current_user.avatar.present?" %>
     <%current_user.avatar.present? %>
     <%if current_user.avatar !=nil %>
-      <%=image_tag(current_user.avatar ,alt: "avatar", class: "rounded-circle", id: "avatar",:alt => "rss feed", :height =>"60", :width => "60") %>
+      <%# <%=image_tag(current_user.avatar ,alt: "avatar", class: "rounded-circle", id: "avatar",:alt => "rss feed", :height =>"60", :width => "60") %> %>
     <%end%>
 
     </div>
@@ -88,11 +88,23 @@
       <p class="mt-1">
         <%=product.product_type%>
       </p>
+      <%if product.quantity%>
+      <%if product.quantity>0%>
       <p class="mt-1 text-red">
         <%=product.quantity%>
       </p>
+      <%else%>
+      <p class="mt-1 text-red text-danger">
+        Out of stock
+      </p>
+      <%end%>
+      <%else%>
+      <p class="mt-1 text-red text-danger">
+        Out of stock
+      </p>
+      <%end%>
       <p class="mt-1 text-danger">
-        $ <%=product.quantity%>
+        $ <%=product.price%>
       </p>
       <%= link_to "View",product, :class=>"btn btn-dark" %>
     </div>

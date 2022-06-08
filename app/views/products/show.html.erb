@@ -46,51 +46,34 @@
 
 
 <p><%= @product.id %></p>
-<%# <%if current_user.id!=@product.user_id%> %>
-<%= button_to 'Add To Cart' , line_items_path(product_id: @product, actions: "+"), class: 'button is-warning add-to-cart'%>
-<%# <%end%> %>
+<%if user_signed_in?%>
+<%if current_user.id==@product.user_id%>
+  <p>you cannot add your own product in cart</p>
+<%else%>
+      <%if @product.quantity%>
+      <%if @product.quantity>0%>
+      <p class="mt-1 text-red">
+        <%= button_to 'Add To Cart' , line_items_path(product_id: @product, actions: "+"), class: 'button is-warning add-to-cart'%>
+      </p>
+      <%else%>
+      <p class="mt-1 text-red text-danger">
+        Out of stock
+      </p>
+      <%end%>
+      <%else%>
+      <p class="mt-1 text-red text-danger">
+        Out of stock
+      </p>
+      <%end%>
+
+<%end%>
+<%end%>
 </div>
 </div>
-
-<%# View Comments %>
-<div class="m-5">
-</div>
-<table class="table">
-  <thead>
-    <tr>
-      <th scope="col">#</th>
-      <th scope="col">Name</th>
-      <th scope="col">Comment</th>
-      <th scope="col">Edit/Delete</th>
-    </tr>
-  </thead>
-  <tbody>
-  <%@product.comments.each do |comment|%>
-    <tr>
-      <th scope="row">1</th>
-      <td><%=comment.commenter%> </td>
-      <td><%=comment.body%> </td>
-      <td>
-        <li><%= link_to "Edit", edit_product_comment_path(comment) %></li>
-    <li><%= link_to "Destroy", comment_path(comment) , method: :delete, data: {confirm: "Are You Sure"}%></li>
-      </td>
-    </tr>
-  <%end%>
-  <tr>
-    <th scope="row">1</th>
-      <td><%=2%> </td>
-      <td><%=3%> </td>
-  </tr>
-  </tbody>
-</table>
-
-<%# Add Product %>
-
-
 <%if user_signed_in?%>
   <div class="text-center">
   <%if current_user.id==@product.user_id%>
-    You cannot comment or add his product
+    You cannot comment on your own product
   <%else%>
     <h2>Add a Comment:</h2>
 <%= form_with model: [ @product, @product.comments.build ], remote: true do |form| %>
@@ -110,5 +93,51 @@
     login to comment on products
   </h3>
 <%end%>
+
+<%# <div id="comment_pane" class=" comment-box " >
+   <%= render "comments/comments", post: post %>
+<%# </div> %>
+<%# View Comments %>
+<div class="m-5">
+</div>
+<table class="table">
+  <%# <thead>
+    <tr>
+      <th scope="col">#</th>
+      <th scope="col">Name</th>
+      <th scope="col">Comment</th>
+      <th scope="col">Edit/Delete</th>
+    </tr>
+  </thead> %>
+  <tbody>
+  <div id="comment_pane">
+
+  <%@product.comments.order( 'created_at DESC' ).each do |comment|%>
+    <tr>
+      <th scope="row">1</th>
+      <td><%=comment.commenter%> </td>
+      <td><%=comment.body%> </td>
+      <%if user_signed_in?%>
+        <%if current_user.id==comment.user_id%>
+        <td>
+        <li><%= link_to "Edit", edit_product_comment_path(id: comment.id, product_id: @product.id) %></li>
+    <li><%= link_to "Destroy", comment_path(comment) , method: :delete, data: {confirm: "Are You Sure"}%></li>
+      </td>
+      <%end%>
+      <%end%>
+
+
+    </tr>
+  <%end%>
+  </div>
+  </tbody>
+</table>
+
+<%# Add Product %>
+
+
+
+
+
 
 
