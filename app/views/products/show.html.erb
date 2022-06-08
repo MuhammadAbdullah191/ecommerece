@@ -65,8 +65,23 @@
         Out of stock
       </p>
       <%end%>
-
 <%end%>
+<%else%>
+<%if @product.quantity%>
+      <%if @product.quantity>0%>
+      <p class="mt-1 text-red">
+        <%= button_to 'Add To Cart' , line_items_path(product_id: @product, actions: "+"), class: 'button is-warning add-to-cart'%>
+      </p>
+      <%else%>
+      <p class="mt-1 text-red text-danger">
+        Out of stock
+      </p>
+      <%end%>
+      <%else%>
+      <p class="mt-1 text-red text-danger">
+        Out of stock
+      </p>
+      <%end%>
 <%end%>
 </div>
 </div>
