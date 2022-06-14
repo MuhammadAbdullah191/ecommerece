@@ -1,18 +1,19 @@
-module CurrentCart
+# frozen_string_literal: true
 
+module CurrentCart
   private
 
   def set_cart
     @cart = Cart.find(session[:cart_id])
-    @count =0
+    @count = 0
     if user_signed_in?
       @cart.line_items.each do |line_item|
-        if line_item.product.user_id==current_user.id
-          print("users is looged in")
-          print(@count)
-          @count=@count+1
-          line_item.destroy
-        end
+        next unless line_item.product.user_id == current_user.id
+
+        Rails.logger.debug('users is looged in')
+        Rails.logger.debug(@count)
+        @count += 1
+        line_item.destroy
       end
 
     end

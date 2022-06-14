@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 Rails.application.routes.draw do
   resources :order_items
   resources :orders
@@ -10,7 +12,7 @@ Rails.application.routes.draw do
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
   resources :webhook, only: [:create]
   resources :checkout, only: [:create]
-  get "success", to: "checkout#success"
+  get 'success', to: 'checkout#success'
   resources :users do
     resources :products
   end
@@ -18,4 +20,12 @@ Rails.application.routes.draw do
     resources :comments
   end
   resources :comments
+  resources :products do
+    member do
+      delete :delete_image_attachment
+    end
+  end
+  scope :active_storage, module: :active_storage, as: :active_storage do
+    resources :attachments, only: [:destroy]
+  end
 end

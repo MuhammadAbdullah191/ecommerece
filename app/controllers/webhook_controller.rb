@@ -1,26 +1,24 @@
+# frozen_string_literal: true
+
 class WebhookController < ApplicationController
   # before_action :authenticate_user!
   skip_before_action :verify_authenticity_token
 
   def create
-    puts "Signature 1"
     payload = request.body.read
     sig_header = request.env['HTTP_STRIPE_SIGNATURE']
     event = nil
 
     begin
       event = Stripe::Webhook.construct_event(
-        payload, sig_header, "whsec_hEgmS0Vrj805OpwP48OxrhgLJieGp8v0"
-
+        payload, sig_header, 'whsec_cc17bdb359c7f406bd7e8dc85f6419c28ab102880ef96d69432a6ddf040c378a'
       )
     rescue JSON::ParserError => e
       status 400
-      puts "Signature 2"
       return
     rescue Stripe::SignatureVerificationError => e
       # Invalid signature
-      puts "Signature 3"
-      p e
+      Rails.logger.debug e
       return
     end
 
@@ -28,16 +26,9 @@ class WebhookController < ApplicationController
     case event.type
     when 'checkout.session.completed'
       session = event.data.object
-      p "testasdsaing cart"
+      Rails.logger.debug 'testasdsaing cart'
 
-      puts("check out successful")
-      # @cart = Cart.create
-
-      # session_with_expand = Stripe::Checkout::Session.retrieve({ id: session.id, expand: ["line_items"]})
-      # session_with_expand.line_items.data.each do |line_item|
-      #   product = Product.find_by(stripe_product_id: line_item.price.product)
-      #   product.increment!(:sales_count)
-      # end
+      Rails.logger.debug('check out successful')
     end
 
     render json: { message: 'success' }

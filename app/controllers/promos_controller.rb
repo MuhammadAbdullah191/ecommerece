@@ -1,11 +1,11 @@
+# frozen_string_literal: true
+
 class PromosController < ApplicationController
   def index
-    @promos= Promo.all()
+    @promos = Promo.all
   end
 
   def create
-    p "in promo controller"
-    p params
-    @promo=Promo.create()
+    @promo = Promo.create
   end
 end
