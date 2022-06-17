@@ -29,7 +29,7 @@ You must have rails 5 and ruby version > 2 installed. other then that you will n
  <br/>
  // enter cloudinary key
  CLOUD_NAME= "ENTER YOUR API"
- 
+
  // enter stripe key
  STRIPE_KEY="ENTER YOUR API"
  <br/>

@@ -1,0 +1,29 @@
+<% if @comment%>
+<table class="table">
+  <tr>
+      <th scope="row"><%= @comment.id%></th>
+      <td class="text-start"><%=@comment.commenter%> </td>
+      <td><%=@comment.body%> </td>
+      <td>
+
+        <li><%= link_to "Edit", edit_product_comment_path(id: comment.id, product_id: @product.id), :remote => true %></li>
+    <li><%= link_to "Destroy", comment_path(comment) , method: :delete, data: {confirm: "Are You Sure"}%></li>
+      </td>
+      <div id="edit_comment" >
+              </div>
+</tr>
+</table>
+<%else%>
+
+<tr>
+      <th scope="row">1</th>
+      <td><%=comment.commenter%> </td>
+      <td><%=comment.body%> </td>
+      <td>
+
+
+      </td>
+
+</tr>
+
+<%end%>

@@ -1,0 +1,37 @@
+inherit_from: .rubocop_todo.yml
+
+require:
+  - rubocop-performance
+  - rubocop-rails
+  - rubocop-rspec # or rubocop-minitest
+
+
+AllCops:
+  # Exclude auto-generated files by Rails
+  TargetRubyVersion: 2.7
+  TargetRailsVersion: 5.2
+  Exclude:
+    - 'db/schema.rb'
+    - 'db/migrate/**'
+    - 'node_modules/**/*'
+    - 'vendor/bundle/**/*'
+    - 'bin/**/*'
+    - 'app/helpers/**'
+
+Layout/LineLength:
+  Max: 160
+
+Metrics/MethodLength:
+  Max: 23
+
+Metrics/BlockLength:
+  Exclude:
+    - config/**/*
+    - spec/**/*
+
+Lint/AmbiguousBlockAssociation:
+  Exclude:
+    - spec/**/*
+
+Style/Documentation:
+  Enabled: false

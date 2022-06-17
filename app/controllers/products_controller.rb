@@ -1,27 +1,39 @@
+# frozen_string_literal: true
+
 class ProductsController < ApplicationController
   def index
-    @products=Product.all();
+    @q = Product.ransack(params[:q])
+    @products = @q.result(distinct: true)
   end
 
   def show
-    @product=Product.find(params[:id])
+    @product = Product.find(params[:id])
+    @q = Product.ransack(params[:q])
+    @products = @q.result(distinct: true)
+  end
+
+  def new
+    @product = Product.new
   end
 
   def create
-    @user=User.find(params[:user_id])
-    @product=@user.products.create(product_params)
-    redirect_to user_path(@user)
+    @user = User.find(current_user.id)
+    @product = @user.products.create(product_params)
+
+    if @product.save
+      redirect_to user_path(@user)
+    else
+      render :new
+    end
   end
 
   def edit
-    puts("params");
-    puts(params);
-    puts("params");
-    @product=Product.find(params[:id])
+    @product = Product.find(params[:id])
+    authorize @product
   end
 
   def update
-    @product=Product.find(params[:id])
+    @product = Product.find(params[:id])
 
     if @product.update(product_params)
       redirect_to @product
@@ -31,15 +43,22 @@ class ProductsController < ApplicationController
   end
 
   def destroy
-
-    @product=Product.find(params[:id])
+    session[:return_to] ||= request.referer
+    @product = Product.find(params[:id])
+    authorize @product
     @product.destroy
+    redirect_to session.delete(:return_to)
+  end
 
-    redirect_to root_path, status: :see_other
+  def delete_image_attachment
+    @image = ActiveStorage::Blob.find_signed(params[:id])
+    @image.purge_later
+    redirect_to product_path(@product)
   end
 
   private
+
   def product_params
-    params.require(:product).permit(:name, :product_type, images: [])
+    params.require(:product).permit(:name, :product_type, :quantity, :price, images: [])
   end
 end
