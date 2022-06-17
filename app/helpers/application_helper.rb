@@ -9,4 +9,9 @@ module ApplicationHelper
     total = @cart.line_items.map(&:quantity).sum
     return total if total.positive?
   end
+  def products
+    q = Product.ransack(params[:q])
+    q.result(distinct: true)
+    return q
+  end
 end

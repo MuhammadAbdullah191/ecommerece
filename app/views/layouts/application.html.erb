@@ -17,12 +17,9 @@
 
   <body>
   <div class="container-fluid">
-   <p class="notice text-success"><%= notice %></p>
+  <%= render partial: "products/nav"%>
+  <p class="notice text-success"><%= notice %></p>
   <p class="alert text-danger"><%= alert %></p>
-
-  <%@q = Product.ransack(params[:q])%>
-  <%@products = @q.result(distinct: true)%>
-  <%= render partial: "products/nav", locals: {:@products => @products} %>
     <%= yield %>
   </div>
 

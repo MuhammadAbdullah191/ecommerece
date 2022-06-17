@@ -4,9 +4,6 @@ class Cart < ApplicationRecord
   has_many :line_items, dependent: :destroy
 
   def add_product(product, action)
-    Rails.logger.debug(action)
-    Rails.logger.debug('product.id')
-    Rails.logger.debug(product.id)
     current_item = line_items.find_by(product_id: product.id)
     if action == '+'
       if current_item

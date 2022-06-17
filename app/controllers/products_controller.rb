@@ -52,7 +52,6 @@ class ProductsController < ApplicationController
 
   def delete_image_attachment
     @image = ActiveStorage::Blob.find_signed(params[:id])
-    @image
     @image.purge_later
     redirect_to product_path(@product)
   end

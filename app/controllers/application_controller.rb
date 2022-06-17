@@ -2,6 +2,7 @@
 
 class ApplicationController < ActionController::Base
   include CurrentCart
+  # include ProductHelper
   include Pundit::Authorization
   before_action :set_cart
   before_action :configure_permitted_parameters, if: :devise_controller?

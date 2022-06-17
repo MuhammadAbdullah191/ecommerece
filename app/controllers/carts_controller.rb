@@ -19,23 +19,19 @@ class CartsController < ApplicationController
   def create
     @cart = Cart.new(cart_params)
 
-    respond_to do |_format|
-      if @cart.save
-        redirect_to cart_url(@cart), notice: 'Cart was successfully created.'
-      else
-        render :new, status: :unprocessable_entity
-      end
+    if @cart.save
+      redirect_to cart_url(@cart), notice: 'Cart was successfully created.'
+    else
+      render :new, status: :unprocessable_entity
     end
   end
 
   def update
-    respond_to do |_format|
-      if @cart.update(cart_params)
-        redirect_to cart_url(@cart), notice: 'Cart was successfully updated.'
-      else
-        render :edit, status: :unprocessable_entity
-        render json: @cart.errors, status: :unprocessable_entity
-      end
+    if @cart.update(cart_params)
+      redirect_to cart_url(@cart), notice: 'Cart was successfully updated.'
+    else
+      render :edit, status: :unprocessable_entity
+      render json: @cart.errors, status: :unprocessable_entity
     end
   end
 
@@ -43,10 +39,8 @@ class CartsController < ApplicationController
     @cart.destroy if @cart.id == session[:cart_id]
     session[:cart_id] = nil
 
-    respond_to do |_format|
-      redirect_to root_path, notice: 'Cart was successfully destroyed.'
-      head :no_content
-    end
+    redirect_to root_path, notice: 'Cart was successfully destroyed.'
+    head :no_content
   end
 
   def success
@@ -65,6 +59,8 @@ class CartsController < ApplicationController
         @count += 1
         line_item.destroy
       end
+    else
+      Rails.logger.debug 'here'
     end
   end
 
@@ -75,6 +71,6 @@ class CartsController < ApplicationController
 
   def invalid_cart
     logger.error "Attempt to access invalid cart #{params[:id]}"
-    redirect_to root_path, notice: "That cart doesn't exist"
+    redirect_to root_path, notice: 'That cart deleted succssfully'
   end
 end

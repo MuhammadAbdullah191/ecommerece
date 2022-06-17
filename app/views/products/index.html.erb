@@ -1,73 +1,59 @@
-
 <div class="container mt-2">
-
   <%@products.each do |product|%>
-   <div class="border d-flex flex-row p-3 m-1">
-   <% if product.images.attached?%>
-      <div>
-        <%=image_tag(product.images.first ,alt: "avatar", class: "rounded", id: "avatar",:alt => "rss feed", :height =>"200", :width => "200") %>
-      </div>
-     <%else%>
-    <img src="..." alt=""  width="200" height="200">
-    <%end%>
-
-    <div class="flex-column p-3 m-2">
-      <h4>
-        <%=product.name%>
-      </h4>
-      <p class="mt-1">
-        <%=product.product_type%>
-      </p>
-      <%if product.quantity%>
-      <%if product.quantity>0%>
-      <p class="mt-1 text-red">
-        <%=product.quantity%>
-      </p>
+    <div class="border d-flex flex-row p-3 m-1">
+      <% if product.images.attached?%>
+        <div>
+          <%=image_tag(product.images.first ,alt: "avatar", class: "rounded", id: "avatar",:alt => "rss feed", :height =>"200", :width => "200") %>
+        </div>
       <%else%>
-      <p class="mt-1 text-red text-danger">
-        Out of stock
-      </p>
+        <img src="..." alt=""  width="200" height="200">
       <%end%>
-      <%else%>
-      <p class="mt-1 text-red text-danger">
-        Out of stock
-      </p>
-      <%end%>
-      <p class="mt-1 text-danger">
-        $ <%=product.price%>
-      </p>
-      <%= link_to "View",product, :class=>"btn btn-dark" %>
-    </div>
-
-    </div>
-
-
-
-
-  <% if false%>
-
-    <div class="card d-flex flex-row mt-2" style="width: 18rem">
-    <% if product.images.attached?%>
-    <div>
-    <%= image_tag(product.images.first, alt: "avatar", class: "card-img-top", id: "avatar") %>
-    </div>
-    <%else%>
-    <img src="..." alt="" class="card-img-top">
-    <%end%>
-
-
-
-      <div class="card-body">
-        <h5 class="card-title"><%=product.name%></h5>
-        <p class="card-text">
-          This is product
+      <div class="flex-column p-3 m-2">
+        <h4>
+          <%=product.name%>
+        </h4>
+        <p class="mt-1">
+          <%=product.product_type%>
         </p>
-        <%= %>
-          <%= link_to "<button >View </button>".html_safe, product%>
-
+        <%if product.quantity%>
+          <%if product.quantity>0%>
+            <p class="mt-1 text-red">
+              <%=product.quantity%>
+            </p>
+          <%else%>
+            <p class="mt-1 text-red text-danger">
+              Out of stock
+            </p>
+          <%end%>
+        <%else%>
+          <p class="mt-1 text-red text-danger">
+            Out of stock
+          </p>
+        <%end%>
+        <p class="mt-1 text-danger">
+          $ <%=product.price%>
+        </p>
+        <%= link_to "View",product, :class=>"btn btn-dark" %>
       </div>
     </div>
+    <% if false%>
+      <div class="card d-flex flex-row mt-2" style="width: 18rem">
+        <% if product.images.attached?%>
+          <div>
+            <%= image_tag(product.images.first, alt: "avatar", class: "card-img-top", id: "avatar") %>
+          </div>
+        <%else%>
+          <img src="..." alt="" class="card-img-top">
+        <%end%>
+        <div class="card-body">
+          <h5 class="card-title"><%=product.name%></h5>
+          <p class="card-text">
+            This is product
+          </p>
+          <%= %>
+          <%= link_to "<button >View </button>".html_safe, product%>
+        </div>
+      </div>
     <%end%>
   <%end%>
-
 </div>

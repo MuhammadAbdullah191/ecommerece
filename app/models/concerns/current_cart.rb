@@ -10,12 +10,9 @@ module CurrentCart
       @cart.line_items.each do |line_item|
         next unless line_item.product.user_id == current_user.id
 
-        Rails.logger.debug('users is looged in')
-        Rails.logger.debug(@count)
         @count += 1
         line_item.destroy
       end
-
     end
   rescue ActiveRecord::RecordNotFound
     @cart = Cart.create

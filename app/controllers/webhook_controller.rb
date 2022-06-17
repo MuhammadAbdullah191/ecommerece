@@ -13,24 +13,17 @@ class WebhookController < ApplicationController
       event = Stripe::Webhook.construct_event(
         payload, sig_header, 'whsec_hEgmS0Vrj805OpwP48OxrhgLJieGp8v0'
       )
-    rescue JSON::ParserError => e
+    rescue JSON::ParserError
       status 400
       return
-    rescue Stripe::SignatureVerificationError => e
-      # Invalid signature
-      Rails.logger.debug e
+    rescue Stripe::SignatureVerificationError
       return
     end
-
-    # Handle the event
     case event.type
     when 'checkout.session.completed'
       session = event.data.object
-      Rails.logger.debug 'testasdsaing cart'
-
-      Rails.logger.debug('check out successful')
+      Rails.logger.debug session
     end
-
     render json: { message: 'success' }
   end
 end

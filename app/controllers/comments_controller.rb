@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 class CommentsController < ApplicationController
+  before_action :authoriz_comment, only: [:create]
   def index; end
 
   def show
@@ -8,15 +9,10 @@ class CommentsController < ApplicationController
   end
 
   def create
-    @product = Product.find(params[:product_id])
     @comment = @product.comments.new(comment_params)
-    authorize @comment
-    if user_signed_in?
-      @comment = @product.comments.new(comment_params)
-      @comment.user_id = current_user.id
-      @comment.commenter = current_user.email
-      @comment.save
-    end
+    @comment.user_id = current_user.id
+    @comment.commenter = current_user.email
+    @comment.save
   end
 
   def edit
@@ -47,5 +43,11 @@ class CommentsController < ApplicationController
 
   def comment_params
     params.require(:comment).permit(:body)
+  end
+
+  def authoriz_comment
+    @product = Product.find(params[:product_id])
+    @comment = @product.comments.new(comment_params)
+    authorize @comment
   end
 end

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class CommentPolicy < ApplicationPolicy
   class Scope < Scope
     # NOTE: Be explicit about which records you allow access to!
@@ -9,7 +11,7 @@ class CommentPolicy < ApplicationPolicy
   def create?
     if @user
       @product = Product.find(@record.product_id)
-      !(@user.id == @product.user_id)
+      @user.id != @product.user_id
     else
       false
     end

@@ -6,5 +6,11 @@ class Promo < ApplicationRecord
   validates :code, presence: true, length: { in: 4..10 }
   validates :discount, presence: true
   validates :valid_till, presence: true
-  validates_with PromoValidator
+  validate :validate_promo
+
+  def validate_promo
+    return if code =~ /\A(?=.*[a-z])[a-z\d]+\Z/i && code == code.upcase
+
+    errors.add :code, 'should only be capital and atleast one alphabet'
+  end
 end

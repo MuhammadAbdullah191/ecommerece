@@ -4,11 +4,11 @@ class User < ApplicationRecord
   devise :database_authenticatable, :registerable,
          :confirmable, :recoverable, :rememberable, :validatable
   has_one_attached :avatar
-  has_many :products
-  has_many :comments
+  has_many :products, dependent: :destroy
+  has_many :comments, dependent: :destroy
   has_many :reviewed_comments, through: :comments, source: :product
-  has_many :orders
-  has_one :promo
+  has_many :orders, dependent: :destroy
+  has_one :promo, dependent: :destroy
 
   validates :name, presence: true, on: :create
   validates :city, presence: true, on: :create

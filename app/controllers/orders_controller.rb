@@ -17,20 +17,19 @@ class OrdersController < ApplicationController
 
   def create
     @order = Order.new(order_params)
+    return unless @order.save
 
-      if @order.save
-        redirect_to order_url(@order), notice: 'Order was successfully created.'
-        render :new, status: :unprocessable_entity
-      end
+    redirect_to order_url(@order), notice: 'Order was successfully created.'
+    render :new, status: :unprocessable_entity
   end
 
   # PATCH/PUT /orders/1 or /orders/1.json
   def update
-      if @order.update(order_params)
-        redirect_to order_url(@order), notice: 'Order was successfully updated.'
-      else
-        render :edit, status: :unprocessable_entity
-      end
+    if @order.update(order_params)
+      redirect_to order_url(@order), notice: 'Order was successfully updated.'
+    else
+      render :edit, status: :unprocessable_entity
+    end
   end
 
   # DELETE /orders/1 or /orders/1.json
