@@ -25,6 +25,14 @@ class CommentPolicy < ApplicationPolicy
     end
   end
 
+  def update?
+    if @user
+      @user.id == @record.user_id
+    else
+      false
+    end
+  end
+
   def destroy?
     if @user
       @user.id == @record.user_id

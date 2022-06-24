@@ -8,7 +8,6 @@ class Order < ApplicationRecord
     current_item = order_items.find_by(product_id: product.id)
 
     if current_item
-      current_item.increment(:quantity)
     else
       current_item = order_items.new(product_id: product.id, price: product.price, quantity: quantity)
       current_item.save

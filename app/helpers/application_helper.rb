@@ -6,8 +6,12 @@ module ApplicationHelper
   end
 
   def total_cart_items
-    total = @cart.line_items.map(&:quantity).sum
-    return total if total.positive?
+    if @cart
+      total = @cart.line_items.map(&:quantity).sum
+      return total if total.positive?
+    end
+
+
   end
   def products
     q = Product.ransack(params[:q])

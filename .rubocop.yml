@@ -17,12 +17,14 @@ AllCops:
     - 'vendor/bundle/**/*'
     - 'bin/**/*'
     - 'app/helpers/**'
+    - spec/**/*
 
 Layout/LineLength:
   Max: 160
 
 Metrics/MethodLength:
   Max: 23
+
 
 Metrics/BlockLength:
   Exclude:

@@ -2,10 +2,9 @@
 
 class CommentsController < ApplicationController
   before_action :authoriz_comment, only: [:create]
-  def index; end
-
-  def show
-    @comment = Comment.find(params[:id])
+  def index
+    @comment = Comment.where(product_id: params[:product_id])
+    render json: @comment
   end
 
   def create
@@ -13,6 +12,7 @@ class CommentsController < ApplicationController
     @comment.user_id = current_user.id
     @comment.commenter = current_user.email
     @comment.save
+    render json: @comment
   end
 
   def edit
@@ -23,11 +23,11 @@ class CommentsController < ApplicationController
 
   def update
     @comment = Comment.find(params[:id])
-
+    authorize @comment
     if @comment.update(comment_params)
-      redirect_to session.delete(:return_to)
+      redirect_to session.delete(:return_to) unless session[:return_to].nil?
     else
-      render :edit
+      render '_edit'
     end
   end
 
@@ -36,7 +36,7 @@ class CommentsController < ApplicationController
     @comment = Comment.find(params[:id])
     authorize @comment
     @comment.destroy
-    redirect_to session.delete(:return_to)
+    redirect_to session.delete(:return_to) unless session[:return_to].nil?
   end
 
   private
