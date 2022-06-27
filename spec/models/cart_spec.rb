@@ -7,7 +7,7 @@ RSpec.describe Cart, type: :model do
     it { is_expected.to have_many(:line_items).dependent(:destroy) }
   end
 
-  describe 'add_product' do
+  context 'add_product' do
     it 'adds line_item to cart' do
       cart = FactoryBot.create(:cart)
       product = FactoryBot.create(:product)
@@ -49,7 +49,7 @@ RSpec.describe Cart, type: :model do
     end
   end
 
-  describe 'total_price' do
+  context 'total_price' do
     it 'returns correct price' do
       cart = FactoryBot.create(:cart)
       product = FactoryBot.create(:product)

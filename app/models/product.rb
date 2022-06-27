@@ -15,10 +15,10 @@ class Product < ApplicationRecord
   validates :quantity, presence: true
   validates :price, numericality: { greater_than_or_equal_to: 500 }
   validates :quantity, numericality: { greater_than_or_equal_to: 0 }
-  # validate :validate_image
-  # def validate_image
-  #   errors.add :images, 'SHOULD BE ATTACHED ATLEAST 1' unless images.attached?
-  # end
+  validate :validate_image
+  def validate_image
+    errors.add :images, 'SHOULD BE ATTACHED ATLEAST 1' unless images.attached?
+  end
 
   def decrement(id, qua)
     @product = Product.find(id)

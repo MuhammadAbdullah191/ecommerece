@@ -7,5 +7,13 @@ FactoryBot.define do
     product_type { 'Quality product' }
     quantity { 5 }
     price { 600 }
+    after(:build) do |product|
+      product.images.attach(
+        io: File.open(Rails.root.join('spec', 'support', 'assets','Unknown.jpeg')),
+        filename: 'Unknown.jpeg',
+        content_type: 'image/jpeg'
+      )
+    end
   end
 end
+

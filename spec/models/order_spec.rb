@@ -8,7 +8,11 @@ RSpec.describe Order, type: :model do
     it { is_expected.to have_many(:order_items).dependent(:destroy) }
   end
 
-  describe 'add_product' do
+  describe 'col-specification' do
+    it { is_expected.to have_db_index(:user_id) }
+  end
+
+  context 'add_product' do
     it 'adds order_item to order' do
       order = FactoryBot.create(:order)
       user = FactoryBot.create(:user, email: 'abd1910@gmail.com')
@@ -18,7 +22,7 @@ RSpec.describe Order, type: :model do
 
   end
 
-  describe 'total_price' do
+  context 'total_price' do
     it 'returns correct price' do
       order = FactoryBot.create(:order)
       user = FactoryBot.create(:user, email: 'abd1910@gmail.com')

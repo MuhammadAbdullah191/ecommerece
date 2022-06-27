@@ -23,7 +23,14 @@ RSpec.describe OrderItem, type: :model do
     end
   end
 
-  describe 'total_price' do
+  describe 'col-specification' do
+    it { is_expected.to have_db_column(:price).of_type(:integer) }
+    it { is_expected.to have_db_column(:quantity).of_type(:integer) }
+    it { is_expected.to have_db_index(:product_id) }
+    it { is_expected.to have_db_index(:order_id) }
+  end
+
+  context 'total_price' do
     it 'returns the correct price' do
       order_item = FactoryBot.build(:order_item)
       price = order_item.product.price

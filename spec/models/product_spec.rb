@@ -49,6 +49,19 @@ RSpec.describe Product, type: :model do
       product = FactoryBot.build(:product, price: 445)
       expect(product).not_to be_valid
     end
+
+    it 'is not valid if no image is attahed' do
+      product = FactoryBot.build(:product, images: nil)
+      expect(product).not_to be_valid
+    end
+  end
+
+  describe 'col-specification' do
+    it { is_expected.to have_db_column(:name).of_type(:string) }
+    it { is_expected.to have_db_column(:product_type).of_type(:string) }
+    it { is_expected.to have_db_column(:price).of_type(:integer) }
+    it { is_expected.to have_db_column(:quantity).of_type(:integer) }
+    it { is_expected.to have_db_index(:user_id) }
   end
 
   describe 'callback' do
@@ -58,7 +71,7 @@ RSpec.describe Product, type: :model do
     end
   end
 
-  describe 'decrement' do
+  context 'decrement' do
     it 'decrements the product quantity' do
       product = FactoryBot.create(:product)
       product.decrement(product.id, 2)

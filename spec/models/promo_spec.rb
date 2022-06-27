@@ -37,4 +37,12 @@ RSpec.describe Promo, type: :model do
       expect(promo).not_to be_valid
     end
   end
+
+  describe 'col-specification' do
+    it { is_expected.to have_db_column(:code).of_type(:string) }
+    it { is_expected.to have_db_column(:discount).of_type(:float) }
+    it { is_expected.to have_db_column(:valid_till).of_type(:datetime) }
+    it { is_expected.to have_db_index(:code) }
+    it { is_expected.to have_db_index(:user_id) }
+  end
 end

@@ -68,6 +68,14 @@ RSpec.describe User, type: :model do
     end
   end
 
+  describe 'col-specification' do
+    it { is_expected.to have_db_column(:name).of_type(:string) }
+    it { is_expected.to have_db_column(:email).of_type(:string) }
+    it { is_expected.to have_db_column(:city).of_type(:string) }
+    it { is_expected.to have_db_column(:street).of_type(:string) }
+    it { is_expected.to have_db_column(:zip).of_type(:string) }
+    it { is_expected.to have_db_index(:email) }
+  end
 
   describe 'callback' do
     it 'gets stripe customer id using after create callback' do

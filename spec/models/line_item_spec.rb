@@ -22,7 +22,13 @@ RSpec.describe LineItem, type: :model do
     end
   end
 
-  describe 'total_price' do
+  describe 'col-specification' do
+    it { is_expected.to have_db_column(:quantity).of_type(:integer) }
+    it { is_expected.to have_db_index(:product_id) }
+    it { is_expected.to have_db_index(:cart_id) }
+  end
+
+  context 'total_price' do
     it 'returns the correct price' do
       line_item = FactoryBot.build(:line_item)
       price = line_item.product.price
@@ -32,7 +38,7 @@ RSpec.describe LineItem, type: :model do
     end
   end
 
-  describe 'to_builder' do
+  context 'to_builder' do
     before do
       @line_item = FactoryBot.create(:line_item)
     end

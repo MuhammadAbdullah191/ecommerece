@@ -37,4 +37,11 @@ RSpec.describe Comment, type: :model do
       expect(comment).not_to be_valid
     end
   end
+
+  describe 'col-specification' do
+    it { is_expected.to have_db_column(:commenter).of_type(:string) }
+    it { is_expected.to have_db_column(:body).of_type(:text) }
+    it { is_expected.to have_db_index(:product_id) }
+    it { is_expected.to have_db_index(:user_id) }
+  end
 end
