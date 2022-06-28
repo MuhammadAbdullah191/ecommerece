@@ -43,7 +43,7 @@ RSpec.describe LineItem, type: :model do
       @line_item = FactoryBot.create(:line_item)
     end
     it 'returns correct json data' do
-      expect(@line_item.to_builder.attributes!).to eq({"amount"=>600, "currency"=>"usd", "name"=>"testProduct", "quantity"=>5})
+      expect(@line_item.to_builder.attributes!).to eq({"amount"=>@line_item.product.price, "currency"=>"usd", "name"=>@line_item.product.name, "quantity"=>@line_item.quantity})
     end
   end
 end

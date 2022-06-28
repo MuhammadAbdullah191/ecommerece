@@ -3,7 +3,7 @@
 FactoryBot.define do
   factory :product do
     user
-    name { 'testProduct' }
+    name { Faker::Commerce.product_name }
     product_type { 'Quality product' }
     quantity { 5 }
     price { 600 }

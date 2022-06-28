@@ -4,10 +4,10 @@ FactoryBot.define do
   factory :user do
     name { Faker::Name.name  }
     email { Faker::Internet.email }
-    password { '87tghjut' }
-    city { 'Rawalpindi' }
+    password { Faker::Alphanumeric.alpha(number: 8) }
+    city { Faker::Address.city }
     street { '1' }
-    zip { '46000' }
+    zip { Faker::Address.zip_code }
     phone { '03349949490' }
   end
 end

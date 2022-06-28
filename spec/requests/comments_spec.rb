@@ -3,12 +3,12 @@
 require 'rails_helper'
 
 RSpec.describe 'CommentsController', type: :request do
+  let!(:product) { FactoryBot.create(:product) }
+  let!(:user) { FactoryBot.create(:user, email: 'abd0@gmail.com') }
+  let!(:comment) {FactoryBot.create(:comment, product: product, user: user)}
 
   describe 'GET /products/:product_id/comments' do
     it 'return all comments of product' do
-      product = FactoryBot.create(:product)
-      user = FactoryBot.create(:user, email: 'abd0@gmail.com')
-      comment = FactoryBot.create(:comment, product: product, user: user)
       comment = FactoryBot.create(:comment, product: product, user: user)
       get product_comments_path(product_id: product.id)
       expect(response).to have_http_status(:ok)
@@ -18,118 +18,78 @@ RSpec.describe 'CommentsController', type: :request do
 
   describe 'POST /products/:product_id/comments' do
     it 'creates new comment' do
-      product = FactoryBot.create(:product)
-      user = FactoryBot.create(:user, email: 'abd0@gmail.com')
-      user.confirm
-      sign_in user
-      get authenticated_root_path
-      expect(controller.current_user).to eq(user)
+      signed_in(user)
       post product_comments_path(product_id: product.id), params: { comment: { body: 'test comment' } }
       expect(response).to have_http_status(:ok)
     end
 
-    it 'redirects to sign in and give code 302 if not-signed in user create comment' do
-      product = FactoryBot.create(:product)
+    it 'should return unauthorised status for unauthenticated user' do
       post product_comments_path(product_id: product.id), params: { comment: { body: 'test comment' } }
-      expect(response).to have_http_status(:found)
+      expect(response).to have_http_status(:unauthorized)
     end
 
-    it 'cannot add comment to own product' do
-      product = FactoryBot.create(:product)
+    it 'should return unauthorised status when user tries to comment on his own product' do
       user = product.user
-      user.confirm
-      sign_in user
-      get authenticated_root_path
-      expect(controller.current_user).to eq(user)
+      signed_in(user)
       post product_comments_path(product_id: product.id), params: { comment: { body: 'test comment' } }
-      expect(response).to have_http_status(:found)
+      expect(response).to have_http_status(:unauthorized)
     end
   end
 
   describe 'delete products/:product_id/comments/:id' do
     it 'deletes a comment' do
-      product = FactoryBot.create(:product)
-      user = FactoryBot.create(:user, email: 'abd0@gmail.com')
-      comment = FactoryBot.create(:comment, product: product, user: user)
-      user.confirm
-      sign_in user
-      get authenticated_root_path
-      expect(controller.current_user).to eq(user)
+      signed_in(user)
       delete product_comment_path(product_id: product.id, id: comment.id)
       expect(response).to have_http_status(:no_content)
     end
 
-    it 'cannot delete a comment without signing in' do
-      product = FactoryBot.create(:product)
-      user = FactoryBot.create(:user, email: 'abd0@gmail.com')
-      comment = FactoryBot.create(:comment, product: product, user: user)
+    it 'should return unauthorised status for unauthenticated user' do
       delete product_comment_path(product_id: product.id, id: comment.id)
-      expect(response).to have_http_status(:found)
+      expect(response).to have_http_status(:unauthorized)
     end
 
     it 'cannot delete a comment of other users' do
-      product = FactoryBot.create(:product)
-      user = FactoryBot.create(:user, email: 'abd0@gmail.com')
-      comment = FactoryBot.create(:comment, product: product, user: user)
       user = product.user
-      user.confirm
-      sign_in user
-      get authenticated_root_path
-      expect(controller.current_user).to eq(user)
+      signed_in(user)
       delete product_comment_path(product_id: product.id, id: comment.id)
-      expect(response).to have_http_status(:found)
+      expect(response).to have_http_status(:unauthorized)
     end
   end
 
   describe 'get /products/:product_id/comments/:id/edit' do
-    it 'edits a comment' do
-      product = FactoryBot.create(:product)
-      user = FactoryBot.create(:user, email: 'abd0@gmail.com')
-      comment = FactoryBot.create(:comment, product: product, user: user)
+    it 'should return unauthorised status for unauthenticated user' do
       get edit_product_comment_path(product_id: product.id, id: comment.id), params: { comment: { body: 'test comment' } }
-      expect(response).to have_http_status(:found)
+      expect(response).to have_http_status(:unauthorized)
+    end
+
+    it 'edits a comment' do
+      get edit_product_comment_path(product_id: product.id, id: comment.id), params: { comment: { body: 'test comment' } }
+      signed_in(user)
+      expect(response).to have_http_status(:ok)
     end
   end
 
-  describe 'updates product_comment' do
+  describe 'patch/put product_comment' do
     it 'updates a comment' do
-      product = FactoryBot.create(:product)
-      user = FactoryBot.create(:user, email: 'abd0@gmail.com')
-      comment = FactoryBot.create(:comment, product: product, user: user)
-      user.confirm
-      sign_in user
-      get authenticated_root_path
-      expect(controller.current_user).to eq(user)
+      signed_in(user)
       put product_comment_path(product_id: product.id, id: comment.id), params: { comment: { body: 'test comment' } }
       expect(response).to have_http_status(:no_content)
     end
 
-    it 'cannnot update a comment without signing in' do
-      product = FactoryBot.create(:product)
-      user = FactoryBot.create(:user, email: 'abd0@gmail.com')
-      comment = FactoryBot.create(:comment, product: product, user: user)
+    it 'should return unauthorised status for unauthenticated user' do
       patch product_comment_path(product_id: product.id, id: comment.id), params: { comment: { body: 'test comment' } }
-      expect(response).to have_http_status(:found)
+      expect(response).to have_http_status(:unauthorized)
     end
 
     it 'cannot update a comment of other users' do
-      product = FactoryBot.create(:product)
-      user = FactoryBot.create(:user, email: 'abd0@gmail.com')
-      comment = FactoryBot.create(:comment, product: product, user: user)
       user = product.user
-      user.confirm
-      sign_in user
-      get authenticated_root_path
-      expect(controller.current_user).to eq(user)
+      signed_in(user)
       patch product_comment_path(product_id: product.id, id: comment.id), params: { comment: { body: 'test comment' } }
-      expect(response).to have_http_status(:found)
+      expect(response).to have_http_status(:unauthorized)
     end
 
     it 'render edit page on invalid params' do
-      product = FactoryBot.create(:product)
-      user = FactoryBot.create(:user, email: 'abd0@gmail.com')
-      comment = FactoryBot.create(:comment, product: product, user: user)
-      signe_in(user)
+      signed_in(user)
       put product_comment_path(product_id: product.id, id: comment.id), params: { comment: { body: nil } }
       expect(response).to have_http_status(:ok)
     end
@@ -137,10 +97,16 @@ RSpec.describe 'CommentsController', type: :request do
 
   private
 
-  def signe_in(user)
+  def signed_in(user)
     user.confirm
     sign_in user
     get authenticated_root_path
   end
 end
+
+
+
+
+
+# expect(controller.current_user).to eq(user)
 
