@@ -10,6 +10,8 @@ class User < ApplicationRecord
   has_many :orders, dependent: :destroy
   has_one :promo, dependent: :destroy
 
+  after_create :update_stripe_customer
+
   validates :name, presence: true, on: :create
   validates :city, presence: true, on: :create
   validates :street, presence: true, on: :create
@@ -22,7 +24,7 @@ class User < ApplicationRecord
     email
   end
 
-  after_create do
+  def update_stripe_customer
     customer = Stripe::Customer.create(email: email)
     update(stripe_customer_id: customer.id)
   end

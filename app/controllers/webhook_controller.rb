@@ -11,7 +11,7 @@ class WebhookController < ApplicationController
 
     begin
       event = Stripe::Webhook.construct_event(
-        payload, sig_header, 'whsec_hEgmS0Vrj805OpwP48OxrhgLJieGp8v0'
+        payload, sig_header, 'whsec_cc17bdb359c7f406bd7e8dc85f6419c28ab102880ef96d69432a6ddf040c378a'
       )
     rescue JSON::ParserError
       status 400

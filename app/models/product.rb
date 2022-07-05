@@ -7,7 +7,8 @@ class Product < ApplicationRecord
   has_many_attached :images
   has_many :line_items, dependent: :destroy
   has_many :order_items, dependent: :destroy
-  before_destroy :not_referenced_by_any_line_item
+
+  after_create :update_serial_number
 
   validates :name, presence: true
   validates :product_type, presence: true
@@ -25,14 +26,8 @@ class Product < ApplicationRecord
     @product.save
   end
 
-  def not_referenced_by_any_line_item
-    return if line_items.empty?
 
-    errors.add(:base, 'Line items present')
-    throw :abort
-  end
-
-  after_create do
+  def update_serial_number
     serial_number = Digest::SHA1.hexdigest([Time.zone.now, rand].join)
     update(serial_number: serial_number)
   end

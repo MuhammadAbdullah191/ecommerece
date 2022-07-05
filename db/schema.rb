@@ -95,7 +95,7 @@ ActiveRecord::Schema.define(version: 2022_06_14_165159) do
     t.bigint "user_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.integer "price", null: false
+    t.integer "price"
     t.string "serial_number"
     t.index ["user_id"], name: "index_products_on_user_id"
   end

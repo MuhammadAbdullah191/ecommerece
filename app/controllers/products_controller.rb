@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 class ProductsController < ApplicationController
+  before_action :not_referenced_by_any_line_item, only: [:destroy]
   def index
     @q = Product.ransack(params[:q])
     @products = @q.result(distinct: true)
@@ -60,5 +61,11 @@ class ProductsController < ApplicationController
 
   def product_params
     params.require(:product).permit(:name, :product_type, :quantity, :price, images: [])
+  end
+  def not_referenced_by_any_line_item
+    return if line_items.empty?
+
+    errors.add(:base, 'Line items present')
+    throw :abort
   end
 end
