@@ -3,7 +3,8 @@
 require 'rails_helper'
 
 RSpec.describe Product, type: :model do
-  let(:product) { FactoryBot.build(:product) }
+  let(:product) { build(:product) }
+  let(:createdProduct) { create(:product) }
 
   describe 'associations' do
     it { is_expected.to belong_to(:user) }
@@ -16,44 +17,45 @@ RSpec.describe Product, type: :model do
 
   describe 'validations' do
     it 'is valid with valid attributes' do
-      product = FactoryBot.build(:product)
       expect(product).to be_valid
     end
 
     it 'is not valid without name' do
-      product = FactoryBot.build(:product, name: nil)
+      product.name=nil
       expect(product).not_to be_valid
+      expect(product.errors.messages[:name]).to eq ["can't be blank"]
     end
 
     it 'is not valid without product type' do
-      product = FactoryBot.build(:product, product_type: nil)
+      product.product_type= nil
       expect(product).not_to be_valid
+      expect(product.errors.messages[:product_type]).to eq ["can't be blank"]
     end
 
     it 'is not valid without quantity' do
-      product = FactoryBot.build(:product, quantity: nil)
+      product.quantity= nil
       expect(product).not_to be_valid
+      expect(product.errors.messages[:quantity]).to eq ["can't be blank", "is not a number"]
     end
 
     it 'is not valid if quantity is < 0' do
-      product = FactoryBot.build(:product, quantity: -5)
+      product.quantity= -5
       expect(product).not_to be_valid
+      expect(product.errors.messages[:quantity]).to eq ["must be greater than or equal to 0"]
     end
 
     it 'is not valid without price' do
-      product = FactoryBot.build(:product, price: nil)
+      product.price= nil
       expect(product).not_to be_valid
+      expect(product.errors.messages[:price]).to eq ["is not a number"]
     end
 
     it 'is not valid if price < 500' do
-      product = FactoryBot.build(:product, price: 445)
+      product.price= 445
       expect(product).not_to be_valid
+      expect(product.errors.messages[:price]).to eq ["must be greater than or equal to 500"]
     end
 
-    it 'is not valid if no image is attahed' do
-      product = FactoryBot.build(:product, images: nil)
-      expect(product).not_to be_valid
-    end
   end
 
   describe 'col-specification' do
@@ -73,10 +75,9 @@ RSpec.describe Product, type: :model do
 
   context 'decrement' do
     it 'decrements the product quantity' do
-      product = FactoryBot.create(:product)
-      product.decrement(product.id, 2)
-      product.reload
-      expect(product.quantity).to eq(3)
+      createdProduct.decrement(createdProduct.id, 2)
+      createdProduct.reload
+      expect(createdProduct.quantity).to eq(3)
     end
   end
 

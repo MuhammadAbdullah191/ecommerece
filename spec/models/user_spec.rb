@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 RSpec.describe User, type: :model do
-
+  let(:user){ build(:user)}
   describe 'associations' do
     it { is_expected.to have_many(:products).dependent(:destroy) }
     it { is_expected.to have_many(:comments).dependent(:destroy) }
@@ -13,53 +13,61 @@ RSpec.describe User, type: :model do
 
   describe 'validations' do
     it 'is valid with valid attributes' do
-      user = FactoryBot.build(:user)
       expect(user).to be_valid
     end
 
     it 'is not valid without name' do
-      user = FactoryBot.build(:user, name: nil)
+      user.name=nil
       expect(user).not_to be_valid
+      expect(user.errors.messages[:name]).to eq ["can't be blank"]
     end
 
     it 'is not valid without email' do
-      user = FactoryBot.build(:user, email: nil)
+      user.email=nil
       expect(user).not_to be_valid
+      expect(user.errors.messages[:email]).to eq ["can't be blank"]
     end
 
     it 'is not valid without proper email format' do
-      user = FactoryBot.build(:user, email: 'abd')
+      user.email="abd"
       expect(user).not_to be_valid
+      expect(user.errors.messages[:email]).to eq ["is invalid"]
     end
 
     it 'is not valid without password' do
-      user = FactoryBot.build(:user, password: nil)
+      user.password=nil
       expect(user).not_to be_valid
+      expect(user.errors.messages[:password]).to eq ["can't be blank"]
     end
 
     it 'is not valid without city' do
-      user = FactoryBot.build(:user, city: nil)
+      user.city=nil
       expect(user).not_to be_valid
+      expect(user.errors.messages[:city]).to eq ["can't be blank"]
     end
 
     it 'is not valid without street' do
-      user = FactoryBot.build(:user, street: nil)
+      user.street=nil
       expect(user).not_to be_valid
+      expect(user.errors.messages[:street]).to eq ["can't be blank"]
     end
 
     it 'is not valid without zip' do
-      user = FactoryBot.build(:user, zip: nil)
+      user.zip =nil
       expect(user).not_to be_valid
+      expect(user.errors.messages[:zip]).to eq ["can't be blank"]
     end
 
     it 'is not valid without phone' do
-      user = FactoryBot.build(:user, phone: nil)
+      user.phone=nil
       expect(user).not_to be_valid
+      expect(user.errors.messages[:phone]).to eq ["number is invalid. Please enter again"]
     end
 
     it 'is not valid without proper phone' do
-      user = FactoryBot.build(:user, phone: '0987557')
+      user.phone='0987557'
       expect(user).not_to be_valid
+      expect(user.errors.messages[:phone]).to eq ["number is invalid. Please enter again"]
     end
 
     it 'retruns valid email' do

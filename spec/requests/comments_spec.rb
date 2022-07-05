@@ -8,8 +8,8 @@ RSpec.describe 'CommentsController', type: :request do
   let!(:comment) {FactoryBot.create(:comment, product: product, user: user)}
 
   describe 'GET /products/:product_id/comments' do
+    let!(:testcomment) { create(:comment, product: product, user: user)}
     it 'return all comments of product' do
-      comment = FactoryBot.create(:comment, product: product, user: user)
       get product_comments_path(product_id: product.id)
       expect(response).to have_http_status(:ok)
       expect(JSON.parse(response.body).size).to eq(2)
@@ -17,10 +17,18 @@ RSpec.describe 'CommentsController', type: :request do
   end
 
   describe 'POST /products/:product_id/comments' do
-    it 'creates new comment' do
-      signed_in(user)
-      post product_comments_path(product_id: product.id), params: { comment: { body: 'test comment' } }
-      expect(response).to have_http_status(:ok)
+    context 'for signed in user' do
+      it 'creates new comment' do
+        signed_in(user)
+        post product_comments_path(product_id: product.id), params: { comment: { body: 'test comment' } }
+        expect(response).to have_http_status(:ok)
+      end
+      it 'should return unauthorised status when user tries to comment on his own product' do
+        user = product.user
+        signed_in(user)
+        post product_comments_path(product_id: product.id), params: { comment: { body: 'test comment' } }
+        expect(response).to have_http_status(:unauthorized)
+      end
     end
 
     it 'should return unauthorised status for unauthenticated user' do
@@ -28,12 +36,6 @@ RSpec.describe 'CommentsController', type: :request do
       expect(response).to have_http_status(:unauthorized)
     end
 
-    it 'should return unauthorised status when user tries to comment on his own product' do
-      user = product.user
-      signed_in(user)
-      post product_comments_path(product_id: product.id), params: { comment: { body: 'test comment' } }
-      expect(response).to have_http_status(:unauthorized)
-    end
   end
 
   describe 'delete products/:product_id/comments/:id' do
