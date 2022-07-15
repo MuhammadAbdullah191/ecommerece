@@ -3,6 +3,8 @@
 class ProductsController < ApplicationController
   before_action :not_referenced_by_any_line_item, only: [:destroy]
   def index
+    print("params");
+    print(params);
     @q = Product.ransack(params[:q])
     @products = @q.result(distinct: true)
   end

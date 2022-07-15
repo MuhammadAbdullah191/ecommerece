@@ -1,6 +1,23 @@
 # frozen_string_literal: true
 
 Rails.application.routes.draw do
+  namespace :api do
+    namespace :v1 do
+      get 'products/shiftToRails', to: 'products#shiftToRails'
+      resources :products
+    end
+  end
+  namespace :api do
+    namespace :v1 do
+      get 'carts/getPrice', to: 'carts#getPrice'
+      post 'carts/changeItem', to: 'carts#changeItem', as: 'changeItem'
+      delete 'carts/destroy', to: 'carts#destroy'
+      post 'carts/checkout', to: 'carts#checkout'
+      resources :carts
+
+    end
+  end
+
   resources :order_items
   resources :orders
   resources :line_items
