@@ -7,7 +7,10 @@ class CartsController < ApplicationController
     @carts = Cart.all
   end
 
-  def show; end
+  def show
+    @url="http://localhost:3001/cart?id="+@cart.id.to_s
+    redirect_to @url, allow_other_host: true
+  end
 
   def edit; end
 

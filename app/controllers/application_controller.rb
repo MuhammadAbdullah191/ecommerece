@@ -3,10 +3,10 @@
 class ApplicationController < ActionController::Base
   include CurrentCart
   # include ProductHelper
-  include Pundit::Authorization
+  # include Pundit::Authorization
   before_action :set_cart
   before_action :configure_permitted_parameters, if: :devise_controller?
-  rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized
+  # rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized
 
   private
 

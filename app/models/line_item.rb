@@ -19,4 +19,30 @@ class LineItem < ApplicationRecord
       line_item.currency 'usd'
     end
   end
+
+  def to_builders
+    @product = Product.find(product_id)
+    if @product.images.attached?
+      @image=@product.images.first.service_url
+      Jbuilder.new do |line_item|
+        line_item.id @product.id
+        line_item.name @product.name
+        line_item.amount @product.price
+        line_item.quantity quantity
+        line_item.total @product.quantity
+        line_item.currency 'usd'
+        line_item.url @image
+      end
+    else
+      Jbuilder.new do |line_item|
+        line_item.id @product.id
+        line_item.name @product.name
+        line_item.amount @product.price
+        line_item.quantity quantity
+        line_item.currency 'usd'
+        line_item.url nil
+      end
+    end
+
+  end
 end
